@@ -1,9 +1,13 @@
 package com.example.vince.proj;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.vince.proj.DB.Role;
 import com.example.vince.proj.UI.CardScaleHelper;
@@ -18,13 +22,32 @@ public class DetailActivity extends AppCompatActivity {
     private List<Role> roles = new ArrayList<>();
     private CardScaleHelper cardScaleHelper = null;
     private Runnable runnable;
-
+    private boolean isMasked = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        View masking_add = findViewById(R.id.masking_add);
+        masking_add.setVisibility(View.GONE);
+
         init();
+
+        com.getbase.floatingactionbutton.FloatingActionButton fab_add = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_add);
+        fab_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View masking_add = findViewById(R.id.masking_add);
+                isMasked = !isMasked;
+                if(isMasked){
+                    masking_add.setVisibility(View.VISIBLE);
+                }
+                else{
+                    masking_add.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
     }
 
@@ -40,5 +63,6 @@ public class DetailActivity extends AppCompatActivity {
         cardScaleHelper.setCurrentItemPos(2);
         cardScaleHelper.attachToRecyclerView(rolesView);
     }
+
 
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#A0FFFFFF">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_line_masking_add"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15"/>
+
+    <ImageView
+        android:id="@+id/portrait_masking_add"
+        android:layout_width="500px"
+        android:layout_height="600px"
+        android:background="@color/colorPrimary"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guide_line_masking_add"/>
+
+    <TextView
+        android:id="@+id/portrait_hint_masking_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="点击添加图片"
+        app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
+        app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
+        app:layout_constraintTop_toTopOf="@+id/portrait_masking_add"
+        app:layout_constraintBottom_toBottomOf="@+id/portrait_masking_add"/>
+
+    <EditText
+        android:id="@+id/name_masking_add"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="姓名："
+        app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
+        app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
+        app:layout_constraintTop_toBottomOf="@id/portrait_masking_add"
+        android:layout_marginTop="10dp"/>
+
+    <EditText
+        android:id="@+id/description_masking_add"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:text="介绍："
+        app:layout_constraintRight_toRightOf="@+id/name_masking_add"
+        app:layout_constraintLeft_toLeftOf="@+id/name_masking_add"
+        app:layout_constraintTop_toBottomOf="@+id/name_masking_add"
+        android:layout_marginTop="0dp"/>
+
+</android.support.constraint.ConstraintLayout>
