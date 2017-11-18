@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Proj</string>
+    <string name="blood">血量：</string>
+    <string name="numofcard">剩余卡牌数：</string>
 </resources>
