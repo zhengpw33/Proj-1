@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.vince.proj.DB.Role;
@@ -83,22 +84,34 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        Button commit_masking_add = (Button) findViewById(R.id.commit_masking_add);
+        commit_masking_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Role role_ = new Role();
+                role_.setId(Index++);
+                role_.setName("zhouyu");
+                role_.setImageId(R.mipmap.zhouyu);
+                role_.setDescription("Test");
+                role_.save();
+
+                roles.add(role_);
+
+                roleAdapter.notifyDataSetChanged();
+
+                masking_add.setVisibility(View.GONE);
+            }
+        });
+
     }
 
-    //初始化recyclerview
+    //初始化RecyclerView
     private void init(){
-        for(int i = 0; i < 4; i++){
-            roles.add(new Role(i, R.mipmap.zhouyu, String.valueOf(i),"Test" ));
-        }
-        Role role0 = new Role(0, R.mipmap.zhouyu, "0","Test" ); role0.save();
-        Role role1 = new Role(1, R.mipmap.zhouyu, "1","Test" ); role1.save();
-        Role role2 = new Role(2, R.mipmap.zhouyu, "2","Test" ); role2.save();
-        Role role3 = new Role(3, R.mipmap.zhouyu, "3","Test" ); role3.save();
         List<Role> roles_ = DataSupport.findAll(Role.class);
-//        Log.i(TAG, "init: "+roles_.size());
-//        for(Role role: roles_){
-//            roles.add(role);
-//        }
+        for(Role role: roles_){
+            roles.add(role);
+        }
         rolesView = (RecyclerView)findViewById(R.id.recyclerView);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rolesView.setLayoutManager(linearLayoutManager);
