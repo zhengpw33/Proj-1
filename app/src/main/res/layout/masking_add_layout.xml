@@ -16,7 +16,7 @@
     <ImageView
         android:id="@+id/portrait_masking_add"
         android:layout_width="500px"
-        android:layout_height="600px"
+        android:layout_height="500px"
         android:background="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -51,5 +51,14 @@
         app:layout_constraintLeft_toLeftOf="@+id/name_masking_add"
         app:layout_constraintTop_toBottomOf="@+id/name_masking_add"
         android:layout_marginTop="0dp"/>
+
+    <Button
+        android:id="@+id/commit_masking_add"
+        android:layout_width="500px"
+        android:layout_height="100px"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="创建角色"
+        app:layout_constraintTop_toBottomOf="@+id/description_masking_add"/>
 
 </android.support.constraint.ConstraintLayout>
