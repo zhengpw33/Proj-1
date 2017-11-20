@@ -1,12 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-<<<<<<< HEAD
-    buildToolsVersion '26.0.1'
-=======
-    buildToolsVersion "26.0.1"
->>>>>>> 21bb3d44c128f57a0448471b058613e695ed07b7
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
+
     defaultConfig {
         applicationId "com.example.vince.proj"
         minSdkVersion 17
