@@ -23,15 +23,6 @@
         android:layout_marginBottom="30dp"
         android:layout_marginTop="30dp"/>
 
-
-
-    <include
-        android:id="@+id/masking_add"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        layout="@layout/masking_add_layout"/>
-
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab_menu"
         android:layout_width="wrap_content"
@@ -65,5 +56,17 @@
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+
+    <include
+        android:id="@+id/masking_add"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/masking_add_layout"/>
+
+    <include
+        android:id="@+id/masking_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/masking_search_layout"/>
 
 </RelativeLayout>

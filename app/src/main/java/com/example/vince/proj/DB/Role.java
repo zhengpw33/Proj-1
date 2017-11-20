@@ -1,10 +1,12 @@
 package com.example.vince.proj.DB;
 
+import org.litepal.crud.DataSupport;
+
 /**
  * Created by vince on 2017/11/13.
  */
 
-public class Role {
+public class Role extends DataSupport {
     private int Id;
     private int ImageId;
     private String Name;
