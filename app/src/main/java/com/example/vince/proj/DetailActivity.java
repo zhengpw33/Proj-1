@@ -5,11 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.example.vince.proj.DB.Role;
 import com.example.vince.proj.UI.CardScaleHelper;
@@ -22,7 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
+
     private static final String TAG = "DetailActivity";
+
     private RecyclerView rolesView;
     private List<Role> roles = new ArrayList<>();
     private CardScaleHelper cardScaleHelper = null;
@@ -33,6 +39,10 @@ public class DetailActivity extends AppCompatActivity {
     private RoleAdapter roleAdapter = new RoleAdapter(roles);
     private View masking_add;
     private View masking_search;
+
+    private String[] mStrs = {"曹操", "刘备", "关羽", "马超"};
+    private SearchView mSearchView;
+    private ListView mListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +111,32 @@ public class DetailActivity extends AppCompatActivity {
                 roleAdapter.notifyDataSetChanged();
 
                 masking_add.setVisibility(View.GONE);
+            }
+        });
+
+        mSearchView = (SearchView) findViewById(R.id.search_view_masking_search);
+
+        mListView  = (ListView) findViewById(R.id.list_view_masking_search);
+        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs));
+        mListView.setTextFilterEnabled(true);
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            // 当点击搜索按钮时触发该方法
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            // 当搜索内容改变时触发该方法
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!TextUtils.isEmpty(newText)){
+                    mListView.setFilterText(newText);
+                }else{
+                    mListView.clearTextFilter();
+                }
+                return false;
             }
         });
 

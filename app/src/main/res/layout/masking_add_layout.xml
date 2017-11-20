@@ -6,59 +6,167 @@
     android:background="#A0FFFFFF">
 
     <android.support.constraint.Guideline
-        android:id="@+id/guide_line_masking_add"
+        android:id="@+id/guide_line1_masking_add"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.15"/>
 
-    <ImageView
-        android:id="@+id/portrait_masking_add"
-        android:layout_width="500px"
-        android:layout_height="500px"
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_line2_masking_add"
         android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.80"/>
+
+    <ScrollView
+        android:id="@+id/scrollview_masking_add"
+        android:layout_width="0px"
+        android:layout_height="0px"
+        app:layout_constraintTop_toBottomOf="@+id/guide_line1_masking_add"
+        app:layout_constraintBottom_toTopOf="@+id/guide_line2_masking_add"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guide_line_masking_add"/>
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:background="#FFFFFF"
+        >
 
-    <TextView
-        android:id="@+id/portrait_hint_masking_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="点击添加图片"
-        app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
-        app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
-        app:layout_constraintTop_toTopOf="@+id/portrait_masking_add"
-        app:layout_constraintBottom_toBottomOf="@+id/portrait_masking_add"/>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp">
 
-    <EditText
-        android:id="@+id/name_masking_add"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:text="姓名："
-        app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
-        app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
-        app:layout_constraintTop_toBottomOf="@id/portrait_masking_add"
-        android:layout_marginTop="10dp"/>
+            <ImageView
+                android:id="@+id/portrait_masking_add"
+                android:layout_width="500px"
+                android:layout_height="500px"
+                android:background="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent" />
 
-    <EditText
-        android:id="@+id/description_masking_add"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:text="介绍："
-        app:layout_constraintRight_toRightOf="@+id/name_masking_add"
-        app:layout_constraintLeft_toLeftOf="@+id/name_masking_add"
-        app:layout_constraintTop_toBottomOf="@+id/name_masking_add"
-        android:layout_marginTop="0dp"/>
+            <TextView
+                android:id="@+id/portrait_hint_masking_add"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击添加图片"
+                app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
+                app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
+                app:layout_constraintTop_toTopOf="@+id/portrait_masking_add"
+                app:layout_constraintBottom_toBottomOf="@+id/portrait_masking_add"/>
+
+
+            <TextView
+                android:id="@+id/name_label_masking_add"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="bottom"
+                android:text="姓名："
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="@+id/portrait_masking_add"
+                app:layout_constraintRight_toLeftOf="@+id/name_masking_add"
+                app:layout_constraintTop_toBottomOf="@id/portrait_masking_add" />
+
+            <EditText
+                android:id="@+id/name_masking_add"
+                android:layout_width="200dp"
+                android:layout_height="32dp"
+                app:layout_constraintRight_toRightOf="@+id/portrait_masking_add"
+                app:layout_constraintLeft_toRightOf="@+id/name_label_masking_add"
+                app:layout_constraintTop_toBottomOf="@id/portrait_masking_add"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/subname_label_masking_add"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="bottom"
+                android:text="字号："
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="@+id/name_label_masking_add"
+                app:layout_constraintRight_toLeftOf="@+id/subname_masking_add"
+                app:layout_constraintTop_toBottomOf="@+id/name_label_masking_add"/>
+
+            <EditText
+                android:id="@+id/subname_masking_add"
+                android:layout_width="200dp"
+                android:layout_height="32dp"
+                app:layout_constraintRight_toRightOf="@+id/name_masking_add"
+                app:layout_constraintLeft_toRightOf="@+id/subname_label_masking_add"
+                app:layout_constraintTop_toBottomOf="@+id/name_masking_add"/>
+
+            <TextView
+                android:id="@+id/native_place_label_masking_add"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:gravity="bottom"
+                android:text="籍贯："
+                android:textSize="18dp"
+                app:layout_constraintLeft_toLeftOf="@+id/subname_label_masking_add"
+                app:layout_constraintRight_toLeftOf="@+id/native_place_masking_add"
+                app:layout_constraintTop_toBottomOf="@+id/subname_label_masking_add"/>
+
+            <EditText
+                android:id="@+id/native_place_masking_add"
+                android:layout_width="200dp"
+                android:layout_height="32dp"
+                app:layout_constraintRight_toRightOf="@+id/subname_masking_add"
+                app:layout_constraintLeft_toRightOf="@+id/native_place_label_masking_add"
+                app:layout_constraintTop_toBottomOf="@+id/subname_masking_add"/>
+
+            <RadioGroup
+                android:id="@+id/gender_masking_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/native_place_label_masking_add"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <RadioButton
+                    android:id="@+id/male_masking_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="男"/>
+               <RadioButton
+                   android:id="@+id/female_masking_add"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="女"/>
+            </RadioGroup>
+
+            <EditText
+                android:id="@+id/description_masking_add"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="介绍："
+                android:minLines="5"
+                app:layout_constraintRight_toRightOf="@+id/gender_masking_add"
+                app:layout_constraintLeft_toLeftOf="@+id/gender_masking_add"
+                app:layout_constraintTop_toBottomOf="@+id/gender_masking_add"
+                android:layout_marginTop="0dp"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/commit_masking_add"
-        android:layout_width="500px"
+        android:layout_width="200px"
         android:layout_height="100px"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="创建角色"
-        app:layout_constraintTop_toBottomOf="@+id/description_masking_add"/>
+        android:text="创建"
+        app:layout_constraintLeft_toLeftOf="@+id/scrollview_masking_add"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview_masking_add"/>
+
+    <Button
+        android:id="@+id/cancel_masking_add"
+        android:layout_width="200px"
+        android:layout_height="100px"
+        android:text="取消"
+        app:layout_constraintRight_toRightOf="@+id/scrollview_masking_add"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview_masking_add"/>
+
 
 </android.support.constraint.ConstraintLayout>
