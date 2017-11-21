@@ -1,7 +1,12 @@
 package com.example.vince.proj;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,12 +17,36 @@ import com.example.vince.proj.DB.Role;
 
 import org.litepal.tablemanager.Connector;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
+
+//    String Picture;
+//    String Music ;
+//    Context context;
+    private String[] rolesName = {"曹操", "曹仁", "大乔", "甘宁", "关羽", "郭嘉", "黄盖", "黄月英", "黄忠", "华佗", "刘备", "陆逊", "吕布", "吕蒙", "马超", "司马懿",
+            "孙权", "孙尚香", "魏延", "夏侯惇", "夏侯渊", "小乔", "许褚", "张飞", "张辽", "赵云", "甄姬", "周瑜", "诸葛亮"};
+    private int[]   rolesImageId = new int[]{R.drawable.caocao,R.drawable.caoren,R.drawable.daqiao,
+            R.drawable.ganning,R.drawable.guanyu,R.drawable.guojia,R.drawable.huanggai,R.drawable.huangyueying,
+            R.drawable.huangzhong,R.drawable.huatuo,R.drawable.liubei,R.drawable.luxun,R.drawable.lvbu,R.drawable.lvmeng,R.drawable.machao,
+            R.drawable.simayi,R.drawable.sunquan,R.drawable.sunshangxiang,R.drawable.weiyan,R.drawable.xiahoudun,R.drawable.xiahouyuan,R.drawable.xiaoqiao,
+            R.drawable.xuzhe,R.drawable.zhangfei,R.drawable.zhangliao,R.drawable.zhaoyun,R.drawable.zhenji,R.drawable.zhouyu,R.drawable.zhugeliang};
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+//        context = getApplicationContext();
+//        Picture = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+//        Music = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+
+
 
         Button toDetail =  (Button) findViewById(R.id.to_detail);
         Button startGame = (Button) findViewById(R.id.start_game);
@@ -55,38 +84,46 @@ public class StartActivity extends AppCompatActivity {
 
     private void initRoleData(){
 
-        Role role0 = new Role();
-        role0.setId(0);
-        Log.i(TAG, "init: "+role0.getId());
-        role0.setName("zhouyu0");
-        role0.setImageId(R.mipmap.zhouyu);
-        role0.setDescription("Test");
-        role0.save();
 
-        Role role1 = new Role();
-        role1.setId(1);
-        Log.i(TAG, "init: "+role1.getId());
-        role1.setName("zhouyu1");
-        role1.setImageId(R.mipmap.zhouyu);
-        role1.setDescription("Test");
-        role1.save();
 
-        Role role2 = new Role();
-        role2.setId(2);
-        Log.i(TAG, "init: "+role2.getId());
-        role2.setName("zhouyu2");
-        role2.setImageId(R.mipmap.zhouyu);
-        role2.setDescription("Test");
-        role2.save();
 
-        Role role3 = new Role();
-        role3.setId(3);
-        Log.i(TAG, "init: "+role3.getId());
-        role3.setName("zhouyu3");
-        role3.setImageId(R.mipmap.zhouyu);
-        role3.setDescription("Test");
-        role3.save();
-
+        for(int i = 0;i<29 ;i++){
+            Role role = new Role();
+            role.setId(i);
+            role.setName(rolesName[i]);
+            role.setImageId(rolesImageId[i]);
+            role.setDescription("Test");
+            role.save();
+//
+////            try {
+////                Bitmap orc_bitmap = (Bitmap) BitmapFactory.decodeResource(context.getResources(),pictId[i]);
+////                saveFile(orc_bitmap,name[i]+".jpg",Picture,context);
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            }
+        }
         Log.i(TAG, "initRoleData: Done");
+
     }
+
+//    public static void saveFile(Bitmap bm, String filename, String path, Context context) throws IOException {
+//        String subForder = path;
+//        Log.i("cunchulujing", subForder);
+//        File foder = new File(subForder);
+//        if (!foder.exists()) {
+//            foder.mkdirs();
+//        }
+//        File myCaptureFile = new File(subForder, filename);
+//        if (!myCaptureFile.exists()) {
+//            myCaptureFile.createNewFile();
+//        }
+//        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
+//        bm.compress(Bitmap.CompressFormat.PNG, 100, bos);
+//        bos.flush();
+//        bos.close();
+//        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//        Uri uri = Uri.fromFile(foder);
+//        intent.setData(uri);
+//        context.sendBroadcast(intent);
+//    }
 }

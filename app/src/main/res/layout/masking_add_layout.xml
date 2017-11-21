@@ -137,17 +137,6 @@
                    android:text="女"/>
             </RadioGroup>
 
-            <EditText
-                android:id="@+id/description_masking_add"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="介绍："
-                android:minLines="5"
-                app:layout_constraintRight_toRightOf="@+id/gender_masking_add"
-                app:layout_constraintLeft_toLeftOf="@+id/gender_masking_add"
-                app:layout_constraintTop_toBottomOf="@+id/gender_masking_add"
-                android:layout_marginTop="0dp"/>
-
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
