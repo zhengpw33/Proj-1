@@ -1,5 +1,6 @@
 package com.example.vince.proj.UI;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.List;
  * Created by vince on 2017/11/13.
  */
 
+
 public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
 
     final private List<Role> roleLists;
@@ -28,6 +30,8 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
             super(view);
             //nameField = (TextView) view.findViewById(R.id.name_main_list);
             portraitField = (ImageView) view.findViewById(R.id.role_content);
+            nameField = (TextView) view.findViewById(R.id.name_role_list);
+            //nameField.setTypeface(Typeface.createFromAsset(view.getAssets(), "SIMLI.TTF"));
         }
     }
 

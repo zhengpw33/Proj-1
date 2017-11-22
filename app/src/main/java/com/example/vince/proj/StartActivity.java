@@ -30,23 +30,17 @@ public class StartActivity extends AppCompatActivity {
 //    Context context;
     private String[] rolesName = {"曹操", "曹仁", "大乔", "甘宁", "关羽", "郭嘉", "黄盖", "黄月英", "黄忠", "华佗", "刘备", "陆逊", "吕布", "吕蒙", "马超", "司马懿",
             "孙权", "孙尚香", "魏延", "夏侯惇", "夏侯渊", "小乔", "许褚", "张飞", "张辽", "赵云", "甄姬", "周瑜", "诸葛亮"};
-    private int[]   rolesImageId = new int[]{R.drawable.caocao,R.drawable.caoren,R.drawable.daqiao,
-            R.drawable.ganning,R.drawable.guanyu,R.drawable.guojia,R.drawable.huanggai,R.drawable.huangyueying,
-            R.drawable.huangzhong,R.drawable.huatuo,R.drawable.liubei,R.drawable.luxun,R.drawable.lvbu,R.drawable.lvmeng,R.drawable.machao,
-            R.drawable.simayi,R.drawable.sunquan,R.drawable.sunshangxiang,R.drawable.weiyan,R.drawable.xiahoudun,R.drawable.xiahouyuan,R.drawable.xiaoqiao,
-            R.drawable.xuzhe,R.drawable.zhangfei,R.drawable.zhangliao,R.drawable.zhaoyun,R.drawable.zhenji,R.drawable.zhouyu,R.drawable.zhugeliang};
+    private int[]   rolesImageId = new int[]{R.mipmap.caocao,R.mipmap.caoren,R.mipmap.daqiao,
+            R.mipmap.ganning,R.mipmap.guanyu,R.mipmap.guojia,R.mipmap.huanggai,R.mipmap.huangyueying,
+            R.mipmap.huangzhong,R.mipmap.huatuo,R.mipmap.liubei,R.mipmap.luxun,R.mipmap.lvbu,R.mipmap.lvmeng,R.mipmap.machao,
+            R.mipmap.simayi,R.mipmap.sunquan,R.mipmap.sunshangxiang,R.mipmap.weiyan,R.mipmap.xiahoudun,R.mipmap.xiahouyuan,R.mipmap.xiaoqiao,
+            R.mipmap.xuzhe,R.mipmap.zhangfei,R.mipmap.zhangliao,R.mipmap.zhaoyun,R.mipmap.zhenji,R.mipmap.zhouyu,R.mipmap.zhugeliang};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
-//        context = getApplicationContext();
-//        Picture = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-//        Music = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath();
-
-
 
         Button toDetail =  (Button) findViewById(R.id.to_detail);
         Button startGame = (Button) findViewById(R.id.start_game);
@@ -80,12 +74,11 @@ public class StartActivity extends AppCompatActivity {
             editor.commit();
         }
 
+        initRoleData();
+
     }
 
     private void initRoleData(){
-
-
-
 
         for(int i = 0;i<29 ;i++){
             Role role = new Role();
@@ -94,7 +87,7 @@ public class StartActivity extends AppCompatActivity {
             role.setImageId(rolesImageId[i]);
             role.setDescription("Test");
             role.save();
-//
+
 ////            try {
 ////                Bitmap orc_bitmap = (Bitmap) BitmapFactory.decodeResource(context.getResources(),pictId[i]);
 ////                saveFile(orc_bitmap,name[i]+".jpg",Picture,context);
