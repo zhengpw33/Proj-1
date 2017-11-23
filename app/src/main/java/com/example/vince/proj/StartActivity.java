@@ -58,7 +58,14 @@ public class StartActivity extends AppCompatActivity {
             "? - 219", "? - ?","? - ?","?-221","169 - 222",
             "? - 229", "183 - 221", "175 - 210", "181 - 234"
     };
-
+    private String [] rolesNativePlace = {
+            "豫州沛国谯", "豫州沛国谯", "扬州庐江郡皖", "益州巴郡临江", "司隶河东郡解",
+            "河东郡解", "颍川郡阳翟", "交州南海郡", "沔南", "荆州南阳郡",
+            "豫州沛国谯", "幽州涿郡涿", "扬州吴郡", "并州五原郡", "豫州汝南郡富波",
+            "扶风茂陵", "河内郡温", "扬州吴郡富春", "扬州吴郡富春", "扬州庐江郡",
+            "豫州沛国谯", "豫州沛国谯", "庐江郡皖", "豫州沛国谯", "幽州涿郡",
+            "并州雁门", "冀州常山", "冀州中山", "扬州庐江", "徐州琅邪"
+    };
 
 
     @Override
@@ -88,17 +95,17 @@ public class StartActivity extends AppCompatActivity {
         Connector.getDatabase();
 
 //        //判断是否是第一次启动
-//        SharedPreferences shared = getSharedPreferences("launchChecker", MODE_PRIVATE);
-//        boolean isFirstLaunch = shared.getBoolean("isFirstLaunch",true);
-//        SharedPreferences.Editor editor=shared.edit();
-//        //若是第一次启动，则初始化数据库数据
-//        if(isFirstLaunch){
-//            initRoleData();
-//            editor.putBoolean("isFirstLaunch",false);
-//            editor.commit();
-//        }
+        SharedPreferences shared = getSharedPreferences("launchChecker", MODE_PRIVATE);
+        boolean isFirstLaunch = shared.getBoolean("isFirstLaunch",true);
+        SharedPreferences.Editor editor=shared.edit();
+        //若是第一次启动，则初始化数据库数据
+        if(isFirstLaunch){
+            initRoleData();
+            editor.putBoolean("isFirstLaunch",false);
+            editor.commit();
+        }
 
-        initRoleData();
+        //initRoleData();
 
     }
 
@@ -110,7 +117,10 @@ public class StartActivity extends AppCompatActivity {
             role.setName(rolesName[i]);
             role.setImageId(rolesImageId[i]);
             role.setLifeTime(rolesLifeTime[i]);
-            Log.i(TAG, "initRoleData: "+role.getLifeTime());
+            role.setNativePlace(rolesNativePlace[i]);
+            role.setDefault(true);
+            role.setImagePath("");
+            Log.i(TAG, "initRoleData: "+role.getNativePlace());
             role.setNationality(rolesNationality[i]);
             role.setDescription("Test");
             role.save();

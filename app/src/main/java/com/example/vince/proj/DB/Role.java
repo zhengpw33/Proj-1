@@ -37,6 +37,10 @@ public class Role extends DataSupport {
     //所属势力
     private String Nationality;
 
+    //是否为系统默认
+    private boolean IsDefault;
+
+    private String ImagePath;
 
     public int getId() {
         return Id;
@@ -108,5 +112,21 @@ public class Role extends DataSupport {
 
     public void setNationality(String nationality) {
         Nationality = nationality;
+    }
+
+    public boolean isDefault() {
+        return IsDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        IsDefault = aDefault;
+    }
+
+    public String getImagePath() {
+        return ImagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        ImagePath = imagePath;
     }
 }

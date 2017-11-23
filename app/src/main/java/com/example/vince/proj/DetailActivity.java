@@ -30,9 +30,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.vince.proj.DB.Role;
@@ -62,7 +64,6 @@ public class DetailActivity extends AppCompatActivity {
     private Runnable runnable;
     private boolean showMaskingAdd = false;
     private boolean showMaskingSearch = false;
-    private int Index = 4;
     private RoleAdapter roleAdapter = new RoleAdapter(roles);
     private View masking_add;
     private View masking_search;
@@ -76,6 +77,10 @@ public class DetailActivity extends AppCompatActivity {
     String Picture;
     String Music ;
     Context context;
+
+    private EditText newRoleName;
+    private EditText newRoleNativePlace;
+    private String   newRoleImagePath;
 
 
     //private String[] mRolesNameList = {};
@@ -99,14 +104,18 @@ public class DetailActivity extends AppCompatActivity {
 
         init();
 
-        Connector.getDatabase();
+        //Connector.getDatabase();
 
         //List<Role>rolesFromQuery = DataSupport.select("name").find(Role.class);
         for(int i = 0; i < roles.size(); i++){
             mRolesNameList.add( roles.get(i).getName());
         }
 
+        /****************************添加功能****************************/
         //绑定添加按钮
+        newRoleName = (EditText) findViewById(R.id.name_masking_add);
+        newRoleNativePlace = (EditText)findViewById(R.id.native_place_masking_add);
+
         final com.getbase.floatingactionbutton.FloatingActionButton fab_add = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_add);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,6 +133,67 @@ public class DetailActivity extends AppCompatActivity {
                 fab_menu.collapseImmediately();
             }
         });
+
+        //添加中的确定按钮
+        Button commit_masking_add = (Button) findViewById(R.id.commit_masking_add);
+        commit_masking_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Connector.getDatabase();
+                int Index = roles.size();
+                Role role_ = new Role();
+                role_.setId(Index++);
+                role_.setName(newRoleName.getText().toString());
+                role_.setImageId(R.mipmap.caocao);
+                role_.setLifeTime("? - ?");
+                role_.setDefault(false);
+                role_.setImagePath(newRoleImagePath);
+                //Log.i(TAG, "initRoleData: "+role_.getLifeTime());
+                role_.setNationality("魏");
+                role_.setDescription("Test");
+                role_.save();
+                roles.add(role_);
+                roleAdapter.notifyDataSetChanged();
+                //roleAdapter.notifyItemInserted(Index);
+                masking_add.setVisibility(View.GONE);
+                mRolesNameList.add(role_.getName());
+            }
+        });
+
+        Button cancel_masking_add = (Button) findViewById(R.id.cancel_masking_add);
+        cancel_masking_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMaskingAdd = false;
+                masking_add.setVisibility(View.GONE);
+            }
+        });
+
+        final String[] way = new String[]{"拍摄","从相册选择"};
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                final AlertDialog.Builder dialog;
+                dialog = new AlertDialog.Builder(DetailActivity.this);
+                dialog.setTitle("").setItems(way, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(which==0){
+                            xiangjiClick(v);
+                        }
+                        if(which==1){
+                            xiangceClick(v);
+                        }
+                    }
+                }).create().show();
+            }
+        });
+
+        /****************************添加功能****************************/
+
+
+
+        /****************************搜索功能****************************/
 
         //绑定搜索按钮
         com.getbase.floatingactionbutton.FloatingActionButton fab_search = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_search);
@@ -145,26 +215,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        //添加中的确定按钮
-        Button commit_masking_add = (Button) findViewById(R.id.commit_masking_add);
-        commit_masking_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Role role_ = new Role();
-                role_.setId(Index++);
-                role_.setName("zhouyu");
-                role_.setImageId(R.mipmap.zhouyu);
-                role_.setDescription("Test");
-                role_.save();
-
-                roles.add(role_);
-
-                roleAdapter.notifyDataSetChanged();
-
-                masking_add.setVisibility(View.GONE);
-            }
-        });
 
         mSearchView = (SearchView) findViewById(R.id.search_view_masking_search);
 
@@ -177,8 +227,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 cardScaleHelper.setCurrentItemPos((int)id);
-
-//                cardScaleHelper.
                 showMaskingSearch = false;
                 String role_name_ = (String)parent.getItemAtPosition(position);
                 rolesView.smoothScrollToPosition(nameToId.get(role_name_)-1);
@@ -207,27 +255,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-
-        final String[] way = new String[]{"拍摄","从相册选择"};
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                final AlertDialog.Builder dialog;
-                dialog = new AlertDialog.Builder(DetailActivity.this);
-                dialog.setTitle("").setItems(way, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(which==0){
-                            xiangjiClick(v);
-                        }
-                        if(which==1){
-                            xiangceClick(v);
-                        }
-                    }
-                }).create().show();
-            }
-        });
-
+        /****************************搜索功能****************************/
     }
 
     //初始化RecyclerView
@@ -244,6 +272,7 @@ public class DetailActivity extends AppCompatActivity {
         cardScaleHelper = new CardScaleHelper();
         cardScaleHelper.setCurrentItemPos(2);
         cardScaleHelper.attachToRecyclerView(rolesView);
+        Log.i(TAG, "init: "+roles.size());
     }
 
 
@@ -294,8 +323,6 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -321,6 +348,7 @@ public class DetailActivity extends AppCompatActivity {
                 break;
         }
     }
+
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private void handleImgeOnKitKat(Intent data) {
         String imagePath = null;
@@ -348,8 +376,12 @@ public class DetailActivity extends AppCompatActivity {
      */
     private void displayImage(String imagePath) {
         if (!TextUtils.isEmpty(imagePath)) {
+            Log.i(TAG, "displayImage: "+imagePath);
+
+            newRoleImagePath = imagePath;
             orc_bitmap = BitmapFactory.decodeFile(imagePath);//获取图片 // orc_bitmap = comp(BitmapFactory.decodeFile(imagePath)); //压缩图
             imageView.setImageBitmap(orc_bitmap);
+
         } else {
             Toast.makeText(this, "图片获取失败", Toast.LENGTH_LONG).show();
         }
@@ -368,6 +400,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         return path;
     }
+
     public static void saveFile(Bitmap bm, String filename, String path, Context context) throws IOException {
         String subForder = path;
         Log.i("cunchulujing", subForder);

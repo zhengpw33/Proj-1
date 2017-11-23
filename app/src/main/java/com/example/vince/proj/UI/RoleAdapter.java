@@ -1,5 +1,7 @@
 package com.example.vince.proj.UI;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -26,10 +28,11 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
     private static final String TAG = "RoleAdapter";
     static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView nameField;
+        TextView  nameField;
         ImageView portraitField;
-        TextView lifeTimeField;
+        TextView  lifeTimeField;
         ImageView nationalityField;
+        TextView  nativePlace;
 
         public ViewHolder(View view){
             super(view);
@@ -38,6 +41,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
             nameField = (TextView) view.findViewById(R.id.name_role_list);
             lifeTimeField = (TextView) view.findViewById(R.id.life_time_role_list);
             nationalityField = (ImageView) view.findViewById(R.id.nationality_label);
+            nativePlace = (TextView) view.findViewById(R.id.native_place_role_list);
             //nameField.setTypeface(Typeface.createFromAsset(getAssets(), "SIMLI.TTF"));
         }
     }
@@ -60,7 +64,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         roleAdapterHelper.onBindViewHolder(holder.itemView, position, getItemCount());
         Role role = roleLists.get(position);
 //        holder.nameField.setText(character.getName());
-        holder.portraitField.setImageResource(role.getImageId());
+
         holder.nameField.setText(role.getName());
         holder.lifeTimeField.setText(role.getLifeTime());
 
@@ -74,6 +78,15 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
             holder.nationalityField.setImageResource(R.mipmap.wu);
         }
 
+        if(role.isDefault()){
+            holder.portraitField.setImageResource(role.getImageId());
+        }
+        else{
+            Bitmap orc_bitmap = BitmapFactory.decodeFile(role.getImagePath());//获取图片 // orc_bitmap = comp(BitmapFactory.decodeFile(imagePath)); //压缩图
+            holder.portraitField.setImageBitmap(orc_bitmap);
+        }
+
+        holder.nativePlace.setText(role.getNativePlace());
         Log.i(TAG, "onBindViewHolder: "+role.getLifeTime());
 
     }
