@@ -2,6 +2,7 @@ package com.example.vince.proj.UI;
 
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +23,22 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
 
     final private List<Role> roleLists;
     private RoleAdapterHelper roleAdapterHelper = new RoleAdapterHelper();
-
+    private static final String TAG = "RoleAdapter";
     static class ViewHolder extends RecyclerView.ViewHolder{
+
         TextView nameField;
         ImageView portraitField;
+        TextView lifeTimeField;
+        ImageView nationalityField;
+
         public ViewHolder(View view){
             super(view);
             //nameField = (TextView) view.findViewById(R.id.name_main_list);
             portraitField = (ImageView) view.findViewById(R.id.role_content);
             nameField = (TextView) view.findViewById(R.id.name_role_list);
-            //nameField.setTypeface(Typeface.createFromAsset(view.getAssets(), "SIMLI.TTF"));
+            lifeTimeField = (TextView) view.findViewById(R.id.life_time_role_list);
+            nationalityField = (ImageView) view.findViewById(R.id.nationality_label);
+            //nameField.setTypeface(Typeface.createFromAsset(getAssets(), "SIMLI.TTF"));
         }
     }
 
@@ -54,6 +61,20 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         Role role = roleLists.get(position);
 //        holder.nameField.setText(character.getName());
         holder.portraitField.setImageResource(role.getImageId());
+        holder.nameField.setText(role.getName());
+        holder.lifeTimeField.setText(role.getLifeTime());
+
+        if(role.getNationality().equals("魏")){
+            holder.nationalityField.setImageResource(R.mipmap.wei);
+        }
+        else if(role.getNationality().equals("蜀")){
+            holder.nationalityField.setImageResource(R.mipmap.shu);
+        }
+        else{
+            holder.nationalityField.setImageResource(R.mipmap.wu);
+        }
+
+        Log.i(TAG, "onBindViewHolder: "+role.getLifeTime());
 
     }
 

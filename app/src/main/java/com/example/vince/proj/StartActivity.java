@@ -28,13 +28,37 @@ public class StartActivity extends AppCompatActivity {
 //    String Picture;
 //    String Music ;
 //    Context context;
-    private String[] rolesName = {"曹操", "曹仁", "大乔", "甘宁", "关羽", "郭嘉", "黄盖", "黄月英", "黄忠", "华佗", "刘备", "陆逊", "吕布", "吕蒙", "马超", "司马懿",
-            "孙权", "孙尚香", "魏延", "夏侯惇", "夏侯渊", "小乔", "许褚", "张飞", "张辽", "赵云", "甄姬", "周瑜", "诸葛亮"};
-    private int[]   rolesImageId = new int[]{R.mipmap.caocao,R.mipmap.caoren,R.mipmap.daqiao,
-            R.mipmap.ganning,R.mipmap.guanyu,R.mipmap.guojia,R.mipmap.huanggai,R.mipmap.huangyueying,
-            R.mipmap.huangzhong,R.mipmap.huatuo,R.mipmap.liubei,R.mipmap.luxun,R.mipmap.lvbu,R.mipmap.lvmeng,R.mipmap.machao,
-            R.mipmap.simayi,R.mipmap.sunquan,R.mipmap.sunshangxiang,R.mipmap.weiyan,R.mipmap.xiahoudun,R.mipmap.xiahouyuan,R.mipmap.xiaoqiao,
-            R.mipmap.xuzhe,R.mipmap.zhangfei,R.mipmap.zhangliao,R.mipmap.zhaoyun,R.mipmap.zhenji,R.mipmap.zhouyu,R.mipmap.zhugeliang};
+    private String[] rolesName = {"曹操", "曹仁", "大乔", "甘宁", "关羽",
+                                    "郭嘉", "黄盖", "黄月英", "黄忠", "华佗",
+                                    "刘备", "陆逊", "吕布", "吕蒙", "马超",
+                                    "司马懿", "孙权", "孙尚香", "魏延", "夏侯惇",
+                                    "夏侯渊", "小乔", "许褚", "张飞", "张辽",
+                                    "赵云", "甄姬", "周瑜", "诸葛亮"};
+    private int[]   rolesImageId = new int[]{
+            R.mipmap.caocao,R.mipmap.caoren,R.mipmap.daqiao, R.mipmap.ganning,R.mipmap.guanyu,
+            R.mipmap.guojia,R.mipmap.huanggai,R.mipmap.huangyueying, R.mipmap.huangzhong,R.mipmap.huatuo,
+            R.mipmap.liubei,R.mipmap.luxun,R.mipmap.lvbu,R.mipmap.lvmeng,R.mipmap.machao,
+            R.mipmap.simayi,R.mipmap.sunquan,R.mipmap.sunshangxiang,R.mipmap.weiyan,R.mipmap.xiahoudun,
+            R.mipmap.xiahouyuan,R.mipmap.xiaoqiao, R.mipmap.xuzhe,R.mipmap.zhangfei,R.mipmap.zhangliao,
+            R.mipmap.zhaoyun,R.mipmap.zhenji,R.mipmap.zhouyu,R.mipmap.zhugeliang};
+
+    private String [] rolesNationality = {
+            "魏", "魏", "吴", "吴", "蜀",
+            "魏", "吴", "蜀", "蜀", "魏",
+            "蜀", "吴", "魏", "吴", "蜀",
+            "魏", "吴", "吴", "蜀", "魏",
+            "魏", "吴", "魏", "蜀", "魏",
+            "蜀", "魏", "吴", "蜀"};
+
+    private String [] rolesLifeTime = {
+            "155 - 220", "168 - 223", "? - ?", "? - ?", "? - 219",
+            "170 - 207", "? - ?", "? - ?", "? - 200", "? - ?",
+            "161 - 223", "183 - 245", "? - 198", "178 - 219", "176 - 222",
+            "179 - 251", "182 - 252", "? - ?", "? - 234", "? - 220",
+            "? - 219", "? - ?","? - ?","?-221","169 - 222",
+            "? - 229", "183 - 221", "175 - 210", "181 - 234"
+    };
+
 
 
     @Override
@@ -63,16 +87,16 @@ public class StartActivity extends AppCompatActivity {
         //连接数据库
         Connector.getDatabase();
 
-        //判断是否是第一次启动
-        SharedPreferences shared = getSharedPreferences("launchChecker", MODE_PRIVATE);
-        boolean isFirstLaunch = shared.getBoolean("isFirstLaunch",true);
-        SharedPreferences.Editor editor=shared.edit();
-        //若是第一次启动，则初始化数据库数据
-        if(isFirstLaunch){
-            initRoleData();
-            editor.putBoolean("isFirstLaunch",false);
-            editor.commit();
-        }
+//        //判断是否是第一次启动
+//        SharedPreferences shared = getSharedPreferences("launchChecker", MODE_PRIVATE);
+//        boolean isFirstLaunch = shared.getBoolean("isFirstLaunch",true);
+//        SharedPreferences.Editor editor=shared.edit();
+//        //若是第一次启动，则初始化数据库数据
+//        if(isFirstLaunch){
+//            initRoleData();
+//            editor.putBoolean("isFirstLaunch",false);
+//            editor.commit();
+//        }
 
         initRoleData();
 
@@ -85,6 +109,9 @@ public class StartActivity extends AppCompatActivity {
             role.setId(i);
             role.setName(rolesName[i]);
             role.setImageId(rolesImageId[i]);
+            role.setLifeTime(rolesLifeTime[i]);
+            Log.i(TAG, "initRoleData: "+role.getLifeTime());
+            role.setNationality(rolesNationality[i]);
             role.setDescription("Test");
             role.save();
 
