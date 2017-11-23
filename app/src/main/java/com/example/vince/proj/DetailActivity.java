@@ -27,6 +27,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,6 +49,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
@@ -64,19 +66,20 @@ public class DetailActivity extends AppCompatActivity {
     private RoleAdapter roleAdapter = new RoleAdapter(roles);
     private View masking_add;
     private View masking_search;
-
     public static final int TAKE_PHOTO = 1;//启动相机标识
     public static final int SELECT_PHOTO = 2;//启动相册标识
     private ImageView imageView;
     private File outputImagepath;//存储拍完照后的图片的路径
     private Bitmap orc_bitmap;//拍照和相册获取图片的Bitmap
+    private HashMap<String, Integer> nameToId = new HashMap<String, Integer>();
     //创建文件夹
     String Picture;
     String Music ;
     Context context;
 
 
-    private String[] mStrs = {"曹操", "刘备", "关羽", "马超"};
+    //private String[] mRolesNameList = {};
+    private ArrayList<String>mRolesNameList = new ArrayList<>();
     private SearchView mSearchView;
     private ListView mListView;
     @Override
@@ -98,6 +101,12 @@ public class DetailActivity extends AppCompatActivity {
 
         Connector.getDatabase();
 
+        //List<Role>rolesFromQuery = DataSupport.select("name").find(Role.class);
+        for(int i = 0; i < roles.size(); i++){
+            mRolesNameList.add( roles.get(i).getName());
+        }
+
+        //绑定添加按钮
         final com.getbase.floatingactionbutton.FloatingActionButton fab_add = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_add);
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +125,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        //绑定搜索按钮
         com.getbase.floatingactionbutton.FloatingActionButton fab_search = (com.getbase.floatingactionbutton.FloatingActionButton) findViewById(R.id.fab_search);
         fab_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +145,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        //添加中的确定按钮
         Button commit_masking_add = (Button) findViewById(R.id.commit_masking_add);
         commit_masking_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,8 +169,23 @@ public class DetailActivity extends AppCompatActivity {
         mSearchView = (SearchView) findViewById(R.id.search_view_masking_search);
 
         mListView  = (ListView) findViewById(R.id.list_view_masking_search);
-        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs));
+        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mRolesNameList));
         mListView.setTextFilterEnabled(true);
+
+        //ListView添加监听
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                cardScaleHelper.setCurrentItemPos((int)id);
+
+//                cardScaleHelper.
+                showMaskingSearch = false;
+                String role_name_ = (String)parent.getItemAtPosition(position);
+                rolesView.smoothScrollToPosition(nameToId.get(role_name_)-1);
+                Log.i(TAG, "onItemClick: "+nameToId.get(role_name_));
+                masking_search.setVisibility(View.GONE);
+            }
+        });
 
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -180,6 +206,7 @@ public class DetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+
 
         final String[] way = new String[]{"拍摄","从相册选择"};
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +235,7 @@ public class DetailActivity extends AppCompatActivity {
         List<Role> roles_ = DataSupport.findAll(Role.class);
         for(Role role: roles_){
             roles.add(role);
+            nameToId.put(role.getName(), role.getId());
         }
         rolesView = (RecyclerView)findViewById(R.id.recyclerView);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);

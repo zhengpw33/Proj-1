@@ -116,26 +116,6 @@
                 app:layout_constraintLeft_toRightOf="@+id/native_place_label_masking_add"
                 app:layout_constraintTop_toBottomOf="@+id/subname_masking_add"/>
 
-            <RadioGroup
-                android:id="@+id/gender_masking_add"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/native_place_label_masking_add"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <RadioButton
-                    android:id="@+id/male_masking_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="男"/>
-               <RadioButton
-                   android:id="@+id/female_masking_add"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:text="女"/>
-            </RadioGroup>
 
         </android.support.constraint.ConstraintLayout>
 
