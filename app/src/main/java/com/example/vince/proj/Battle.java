@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.concurrent.ConcurrentNavigableMap;
 
 import static android.R.attr.finishOnTaskLaunch;
 import static android.R.attr.type;
@@ -54,7 +56,7 @@ public class Battle extends AppCompatActivity {
     private boolean DONE;
     private boolean PREPARE;
     private List<Role> dbrole;
-
+    private int CURRENT;
     private boolean SIGNAL;
 
     @Override
@@ -69,7 +71,6 @@ public class Battle extends AppCompatActivity {
                 relativeLayout.setVisibility(View.VISIBLE);
                 //RelativeLayout.LayoutParams my = (RelativeLayout.LayoutParams)player1.getLayoutParams();
                 //my.width = (int)(my.width*1.1);
-
 
                 dialog.setMessage("游戏结束，你赢了!!!");
                 //dialog.show();
@@ -88,6 +89,8 @@ public class Battle extends AppCompatActivity {
         DONE = false;
 
         PREPARE = true;
+        player1_blood_num=player2_blood_num=30;
+        player1_card_num=player2_card_num=0;
         dbrole =  DataSupport.findAll(Role.class);
         relativeLayout.setVisibility(View.INVISIBLE);
         rolesView1.setVisibility(View.VISIBLE);
@@ -102,9 +105,7 @@ public class Battle extends AppCompatActivity {
         init_recyclerview();
         init_laugh();
         init_dialog();
-        player1_blood_num=player2_blood_num=30;
-        player1_card_num=player2_card_num=0;
-        player1_card_num=player2_card_num=10;
+
 
     }
     private void findview(){
@@ -142,17 +143,22 @@ public class Battle extends AppCompatActivity {
         roleadapter1.setOnItemClickListener(new RoleAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
+                map = new LinkedHashMap<>();
+                map.put("content",roles1.get(position).getName());
+                dataList.add(0,map);
+                sim_aAdapter.notifyDataSetChanged();
                 roles1.remove(position);
                 player1_card_num-=1;
                 roleadapter1.notifyDataSetChanged();
                 rolesView1.setVisibility(View.INVISIBLE);
                 blurView.setVisibility(View.INVISIBLE);
+                player1_description.setText(String.valueOf(player1_card_num));
+                player2_blood_num-=(int)(Math.random()*10);
+                player2_blood.setText(String.valueOf(player2_blood_num));
+                isgameover();
                 TURN = true;
-                map = new LinkedHashMap<>();
-                map.put("content","33");
-                dataList.add(0,map);
-                sim_aAdapter.notifyDataSetChanged();
-                listView.smoothScrollToPositionFromTop(0, 0);
+
+               // listView.smoothScrollToPositionFromTop(0, 0);
             }
             @Override
             public void onLongClick(int position) {
@@ -194,7 +200,7 @@ public class Battle extends AppCompatActivity {
                             deal();
                         }
                         else{
-                            // AI_turn();
+                            AI_turn();
                         }
                 }
             }
@@ -217,16 +223,16 @@ public class Battle extends AppCompatActivity {
     }
     void deal()
     {
+        isgameover();
         if(player1_card_num<8){
-            roles1.add( dbrole.get((int) (Math.random() * dbrole.size())));
+            roles1.add( 0,dbrole.get((int) (Math.random() * dbrole.size())));
             roleadapter1.notifyDataSetChanged();
-            cardScaleHelper1.setCurrentItemPos(player1_card_num);
+
             player1_card_num+=1;
             player1_description.setText(String.valueOf(player1_card_num));
 
             roles2.add( dbrole.get((int) (Math.random() * dbrole.size())));
             roleadapter2.notifyDataSetChanged();
-            cardScaleHelper2.setCurrentItemPos(player2_card_num);
             player2_card_num+=1;
             player2_description.setText(String.valueOf(player2_card_num));
         }
@@ -235,14 +241,33 @@ public class Battle extends AppCompatActivity {
         }
     }
     void AI_turn(){
-        TURN = false;
-        map = new LinkedHashMap<>();
-        map.put("content","66666666666");
-        dataList.add(0,map);
-        sim_aAdapter.notifyDataSetChanged();
-        listView.smoothScrollToPositionFromTop(0, 0);
-        rolesView1.setVisibility(View.VISIBLE);
-        blurView.setVisibility(View.VISIBLE);
+        if(TURN){
+            if(CURRENT<6){
+                CURRENT+=1;
+            }
+            else{
+                CURRENT=0;
+                TURN = false;
+                int position = (int)Math.random()*player2_card_num;
+                map = new LinkedHashMap<>();
+                map.put("content",roles2.get(position).getName());
+                dataList.add(0,map);
+                sim_aAdapter.notifyDataSetChanged();
+                roles2.remove(position);
+                player2_card_num-=1;
+                roleadapter2.notifyDataSetChanged();
+                player2_description.setText(String.valueOf(player2_card_num));
+                player1_blood_num-=(int)(Math.random()*10);
+                player1_blood.setText(String.valueOf(player1_blood_num));
+                rolesView1.setVisibility(View.VISIBLE);
+                blurView.setVisibility(View.VISIBLE);
+                isgameover();
+            }
+        }
+    }
+    void isgameover(){
+        if(player1_blood_num<=0) gameover(false);
+        else if(player2_blood_num<=0) gameover(true);
     }
     void init_dialog(){
         dialog = new AlertDialog.Builder(Battle.this);
@@ -254,6 +279,17 @@ public class Battle extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    void gameover(boolean outcome){
+        if(outcome){
+            dialog.setMessage("游戏结束，你赢了!!!");
+            DONE = true;
+        }
+        else{
+            dialog.setMessage("游戏结束，你输了!!!");
+            DONE = true;
+        }
+        dialog.show();
     }
     private int dip2px(Context context, float dipValue)
     {
