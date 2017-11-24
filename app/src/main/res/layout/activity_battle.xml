@@ -143,6 +143,18 @@
                 android:layout_toRightOf="@id/player2_description1"
                 />
         </RelativeLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/vs"
+            android:src="@drawable/vs"
+            android:scaleType="fitXY"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+
+            />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"

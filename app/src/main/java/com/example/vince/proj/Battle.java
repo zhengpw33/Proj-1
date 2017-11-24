@@ -3,6 +3,7 @@ package com.example.vince.proj;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -49,7 +50,7 @@ public class Battle extends AppCompatActivity {
     private RoleAdapter roleadapter1,roleadapter2;
     private LinearLayout relativeLayout;
     private  AlertDialog.Builder dialog;
-    private ImageView player1,blurView;
+    private ImageView player1,blurView,VS;
     private TextView player1_blood,player2_blood,player1_description,player2_description,action1,action2;
     private int player1_blood_num,player2_blood_num,player1_card_num,player2_card_num;
     private boolean TURN;
@@ -58,6 +59,7 @@ public class Battle extends AppCompatActivity {
     private List<Role> dbrole;
     private int CURRENT;
     private boolean SIGNAL;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,8 +107,6 @@ public class Battle extends AppCompatActivity {
         init_recyclerview();
         init_laugh();
         init_dialog();
-
-
     }
     private void findview(){
         relativeLayout = (LinearLayout) findViewById(R.id.laugh);
@@ -121,6 +121,7 @@ public class Battle extends AppCompatActivity {
         player1 = (ImageView) findViewById(R.id.player1);
         action1 = (TextView) findViewById(R.id.action1);
         action2 = (TextView) findViewById(R.id.action2);
+        VS = (ImageView)findViewById(R.id.vs);
         //player2 = (ImageView) findViewById(R.id.player2);
     }
     private void init_listview(){
@@ -223,8 +224,11 @@ public class Battle extends AppCompatActivity {
     }
     void deal()
     {
-        isgameover();
         if(player1_card_num<8){
+            RelativeLayout.LayoutParams my = (RelativeLayout.LayoutParams)VS.getLayoutParams();
+            my.width = (int)(my.width*1.2);
+            my.height=(int)(my.height*1.2);
+            VS.setLayoutParams(my);
             roles1.add( 0,dbrole.get((int) (Math.random() * dbrole.size())));
             roleadapter1.notifyDataSetChanged();
 
@@ -237,10 +241,12 @@ public class Battle extends AppCompatActivity {
             player2_description.setText(String.valueOf(player2_card_num));
         }
         else{
+            VS.setVisibility(View.INVISIBLE);
             PREPARE = false;
         }
     }
     void AI_turn(){
+        isgameover();
         if(TURN){
             if(CURRENT<6){
                 CURRENT+=1;
