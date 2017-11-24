@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
     final private List<Role> roleLists;
     private RoleAdapterHelper roleAdapterHelper = new RoleAdapterHelper();
     private static final String TAG = "RoleAdapter";
+    OnItemClickListener mOnItemClickListener;
     static class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView  nameField;
@@ -54,13 +56,13 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.role_list, parent, false);
-        //final ViewHolder holder = new ViewHolder(view);
+        final ViewHolder holder = new ViewHolder(view);
         roleAdapterHelper.onCreateViewHolder(parent, view);
-        return new ViewHolder(view);
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         roleAdapterHelper.onBindViewHolder(holder.itemView, position, getItemCount());
         Role role = roleLists.get(position);
 //        holder.nameField.setText(character.getName());
@@ -89,6 +91,16 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         holder.nativePlace.setText(role.getNativePlace());
         Log.i(TAG, "onBindViewHolder: "+role.getLifeTime());
 
+        if(mOnItemClickListener != null){
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+                @Override
+                public boolean onLongClick(View v){
+                    mOnItemClickListener.onLongClick((holder.getAdapterPosition()));
+                    return  false;
+                }
+
+            });
+        }
     }
 
     @Override
@@ -96,5 +108,15 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         return roleLists.size();
     }
 
-
+    public interface OnItemClickListener{
+        void onLongClick(int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        mOnItemClickListener = onItemClickListener;
+    }
+    public void removeItem(int position){
+        roleLists.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(0, roleLists.size());
+    }
 }

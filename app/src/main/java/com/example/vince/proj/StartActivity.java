@@ -101,6 +101,7 @@ public class StartActivity extends AppCompatActivity {
         //若是第一次启动，则初始化数据库数据
         if(isFirstLaunch){
             initRoleData();
+            Log.i(TAG, "onCreate: "+"!!!");
             editor.putBoolean("isFirstLaunch",false);
             editor.commit();
         }

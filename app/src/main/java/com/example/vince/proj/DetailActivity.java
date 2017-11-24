@@ -102,6 +102,15 @@ public class DetailActivity extends AppCompatActivity {
         context = getApplicationContext();
         imageView =(ImageView)findViewById(R.id.portrait_masking_add);//不能用
 
+        roleAdapter.setOnItemClickListener(new RoleAdapter.OnItemClickListener() {
+            @Override
+            public void onLongClick(int position) {
+                roleAdapter.removeItem(position);
+                roles.remove(position);
+                //DataSupport.delete(Role.class, roles.get(position).getId());
+                DataSupport.deleteAll(Role.class, "name = ?", roles.get(position).getName());
+            }
+        });
         init();
 
         //Connector.getDatabase();
@@ -261,10 +270,13 @@ public class DetailActivity extends AppCompatActivity {
     //初始化RecyclerView
     private void init(){
         List<Role> roles_ = DataSupport.findAll(Role.class);
+
+        roles.clear();
         for(Role role: roles_){
             roles.add(role);
             nameToId.put(role.getName(), role.getId());
         }
+        Log.i(TAG, "init: "+roles.size());
         rolesView = (RecyclerView)findViewById(R.id.recyclerView);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rolesView.setLayoutManager(linearLayoutManager);
@@ -272,7 +284,6 @@ public class DetailActivity extends AppCompatActivity {
         cardScaleHelper = new CardScaleHelper();
         cardScaleHelper.setCurrentItemPos(2);
         cardScaleHelper.attachToRecyclerView(rolesView);
-        Log.i(TAG, "init: "+roles.size());
     }
 
 
