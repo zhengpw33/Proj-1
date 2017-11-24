@@ -92,10 +92,10 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         holder.nameField.setText(role.getName());
         holder.lifeTimeField.setText(role.getLifeTime());
 
-        if(role.getNationality().equals("魏")){
+        if(role.getNationality().equals("κ")){
             holder.nationalityField.setImageResource(R.mipmap.wei);
         }
-        else if(role.getNationality().equals("蜀")){
+        else if(role.getNationality().equals("��")){
             holder.nationalityField.setImageResource(R.mipmap.shu);
         }
         else{
@@ -106,7 +106,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
             holder.portraitField.setImageResource(role.getImageId());
         }
         else{
-            Bitmap orc_bitmap = BitmapFactory.decodeFile(role.getImagePath());//获取图片 // orc_bitmap = comp(BitmapFactory.decodeFile(imagePath)); //压缩图
+            Bitmap orc_bitmap = BitmapFactory.decodeFile(role.getImagePath());//��ȡͼƬ // orc_bitmap = comp(BitmapFactory.decodeFile(imagePath)); //ѹ��ͼ
             holder.portraitField.setImageBitmap(orc_bitmap);
         }
 
@@ -142,7 +142,7 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
         notifyItemRemoved(position);
         notifyItemRangeChanged(0, roleLists.size());
 
-    public interface  OnItemClickListener{//接口
+    public interface  OnItemClickListener{//�ӿ�
         void onClick(int position);
         void onLongClick(int position);
     }

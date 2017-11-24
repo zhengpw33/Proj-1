@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#ffffff"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:id="@+id/player1"
             android:contentDescription="photo"
-            android:background="#330000"
+            android:background="@drawable/wu"
             />
         <ImageView
             android:layout_width="100dp"
@@ -29,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:id="@+id/player2"
             android:contentDescription="photo"
-            android:background="#330000"
+            android:background="@drawable/wei"
             />
         <LinearLayout
             android:layout_width="200dp"
@@ -37,20 +38,27 @@
             android:id="@+id/laugh"
             android:orientation="vertical"
             android:layout_toEndOf="@+id/player1"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
             >
             <TextView
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:id="@+id/action1"
-                android:background="#ffffff"
+                android:text="  称赞"
+                android:background="@drawable/left_messages"
                 />
             <TextView
-                android:layout_width="180dp"
-                android:layout_height="50dp"
                 android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
                 android:id="@+id/action2"
-                android:background="#ffffff"
+                android:background="@drawable/left_messages"
+                android:textAlignment="center"
+                android:text="  嘲讽"
                 />
         </LinearLayout>
 
@@ -89,6 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="33"
+                android:id="@+id/player1_card"
                 android:layout_below="@id/player1_description"
                 android:layout_toRightOf="@id/player1_description1"
                 />
@@ -129,16 +138,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="33"
+                android:id="@+id/player2_card"
                 android:layout_below="@id/player2_description"
                 android:layout_toRightOf="@id/player2_description1"
                 />
         </RelativeLayout>
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/vs"
+            android:src="@drawable/vs"
+            android:scaleType="fitXY"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+
+            />
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_weight="1"
+
         >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#cccccc"
+            android:layout_alignParentTop="true"
+            />
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -146,12 +175,30 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             />
+        <ImageView
+            android:id="@+id/blurView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#3f000000"
+            android:scaleType="centerCrop"/>
+
         <com.example.vince.proj.UI.SpeedRecyclerView
-            android:id="@+id/battle_recycler"
+            android:id="@+id/battle_recycler1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            />
+        <com.example.vince.proj.UI.SpeedRecyclerView
+            android:id="@+id/battle_recycler2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             />
     </RelativeLayout>
 
