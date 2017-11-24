@@ -2,13 +2,11 @@ package com.example.vince.proj.UI;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +19,6 @@ import java.util.List;
  * Created by vince on 2017/11/13.
  */
 
-
 public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
 
     final private List<Role> roleLists;
@@ -29,7 +26,6 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
     private static final String TAG = "RoleAdapter";
     OnItemClickListener mOnItemClickListener;
 
-    protected OnItemClickListener myOnItemClickListener;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -71,21 +67,6 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
 //        holder.nameField.setText(character.getName());
 
         holder.portraitField.setImageResource(role.getImageId());
-        if(myOnItemClickListener!=null){
-            holder.itemView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    myOnItemClickListener.onClick(holder.getAdapterPosition());
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
-                @Override
-                public boolean onLongClick(View v){
-                    myOnItemClickListener.onLongClick(holder.getAdapterPosition());
-                    return false;
-                }
-            });
-        }
 
 
 
@@ -137,16 +118,10 @@ public class RoleAdapter extends RecyclerView.Adapter<RoleAdapter.ViewHolder> {
     public void setOnItemClickListener(OnItemClickListener onItemClickListener){
         mOnItemClickListener = onItemClickListener;
     }
-    public void removeItem(int position){
+    public void removeItem(int position) {
         roleLists.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(0, roleLists.size());
+    }
 
-    public interface  OnItemClickListener{//接口
-        void onClick(int position);
-        void onLongClick(int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.myOnItemClickListener=onItemClickListener;
-    }
 }

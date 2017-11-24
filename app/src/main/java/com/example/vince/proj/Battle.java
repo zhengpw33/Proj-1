@@ -26,6 +26,7 @@ import android.widget.TextView;
 import com.example.vince.proj.DB.Role;
 import com.example.vince.proj.UI.CardScaleHelper;
 import com.example.vince.proj.UI.RoleAdapter;
+import com.example.vince.proj.UI.RoleAdapterSimple;
 
 import org.litepal.crud.DataSupport;
 
@@ -47,7 +48,7 @@ public class Battle extends AppCompatActivity {
     private RecyclerView rolesView1,rolesView2;
     private List<Role> roles1 = new ArrayList<>(),roles2 = new ArrayList<>();
     private CardScaleHelper cardScaleHelper1,cardScaleHelper2;
-    private RoleAdapter roleadapter1,roleadapter2;
+    private RoleAdapterSimple roleadapter1,roleadapter2;
     private LinearLayout relativeLayout;
     private  AlertDialog.Builder dialog;
     private ImageView player1,blurView,VS;
@@ -137,11 +138,11 @@ public class Battle extends AppCompatActivity {
 
     private void init_recyclerview(){
         rolesView1.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        roleadapter1 = new RoleAdapter(roles1);
+        roleadapter1 = new RoleAdapterSimple(roles1);
         rolesView1.setAdapter(roleadapter1);
         cardScaleHelper1 = new CardScaleHelper();
         cardScaleHelper1.attachToRecyclerView(rolesView1);
-        roleadapter1.setOnItemClickListener(new RoleAdapter.OnItemClickListener() {
+        roleadapter1.setOnItemClickListener(new RoleAdapterSimple.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 map = new LinkedHashMap<>();
@@ -166,7 +167,7 @@ public class Battle extends AppCompatActivity {
             }
         });
         rolesView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        roleadapter2 = new RoleAdapter(roles2);
+        roleadapter2 = new RoleAdapterSimple(roles2);
         rolesView2.setAdapter(roleadapter2);
         cardScaleHelper2 = new CardScaleHelper();
         cardScaleHelper2.attachToRecyclerView(rolesView2);
