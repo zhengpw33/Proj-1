@@ -1,12 +1,16 @@
 package com.example.vince.proj;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.vince.proj.DB.Role;
+import com.example.vince.proj.MusicService;
 
 import org.litepal.tablemanager.Connector;
 
@@ -24,7 +29,22 @@ import java.io.IOException;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
+    private MusicService.MusicBinder musicBinder;
 
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicBinder = null;
+        }
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (musicBinder == null) {
+                musicBinder = (MusicService.MusicBinder) service;
+                //启动音乐
+                musicBinder.startPlay(0,0);
+            }
+        }
+    };
 //    String Picture;
 //    String Music ;
 //    Context context;
@@ -107,6 +127,7 @@ public class StartActivity extends AppCompatActivity {
         }
 
         //initRoleData();
+        connectToMusicService();
 
     }
 
@@ -157,4 +178,20 @@ public class StartActivity extends AppCompatActivity {
 //        intent.setData(uri);
 //        context.sendBroadcast(intent);
 //    }
+    private void connectToMusicService() {
+        Intent intent = new Intent(StartActivity.this, MusicService.class);
+        //向MusicService传递当前目录下的歌曲列表
+        Bundle bundle = new Bundle();
+        startService(intent);
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //todo 注销注册
+        if (musicBinder != null) {
+            unbindService(serviceConnection);
+        }
+    }
+
 }

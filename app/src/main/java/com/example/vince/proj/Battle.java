@@ -25,12 +25,14 @@ import android.widget.TextView;
 
 import com.example.vince.proj.DB.Role;
 import com.example.vince.proj.UI.CardScaleHelper;
+import com.example.vince.proj.UI.OddEvenAdapter;
 import com.example.vince.proj.UI.RoleAdapter;
 import com.example.vince.proj.UI.RoleAdapterSimple;
 
 import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +44,8 @@ import static android.R.attr.type;
 
 public class Battle extends AppCompatActivity {
     private SimpleAdapter sim_aAdapter; // 1. 新建一个数据适配器
-    private  Map<String,Object> map;
-    private List<Map<String, Object>> dataList; // 数据源
+    private HashMap<String,String> map;
+    private List<HashMap<String, String>> dataList; // 数据源
     private ListView listView;
     private RecyclerView rolesView1,rolesView2;
     private List<Role> roles1 = new ArrayList<>(),roles2 = new ArrayList<>();
@@ -127,12 +129,8 @@ public class Battle extends AppCompatActivity {
     }
     private void init_listview(){
         dataList = new ArrayList<>();
-        for(int i=0;i<10;++i){
-            map = new LinkedHashMap<>();
-            map.put("content","23333");
-            dataList.add(map);
-        }
-        sim_aAdapter = new SimpleAdapter(this, dataList, R.layout.item, new String[]{"content"}, new int[]{R.id.description});
+
+        sim_aAdapter = new OddEvenAdapter(this,dataList, R.layout.item, new String[]{"content"}, new int[]{R.id.description});
         listView.setAdapter(sim_aAdapter);
     }
 
@@ -157,9 +155,7 @@ public class Battle extends AppCompatActivity {
                 player1_description.setText(String.valueOf(player1_card_num));
                 player2_blood_num-=(int)(Math.random()*10);
                 player2_blood.setText(String.valueOf(player2_blood_num));
-                isgameover();
                 TURN = true;
-
                // listView.smoothScrollToPositionFromTop(0, 0);
             }
             @Override
@@ -169,8 +165,6 @@ public class Battle extends AppCompatActivity {
         rolesView2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         roleadapter2 = new RoleAdapterSimple(roles2);
         rolesView2.setAdapter(roleadapter2);
-        cardScaleHelper2 = new CardScaleHelper();
-        cardScaleHelper2.attachToRecyclerView(rolesView2);
 
     }
     void init_laugh(){

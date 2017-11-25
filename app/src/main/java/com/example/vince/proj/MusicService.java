@@ -1,9 +1,10 @@
-package com.example.vince.proj.Service;
+package com.example.vince.proj;
 
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -26,7 +28,7 @@ public class MusicService extends Service {
     public static final String ACTION_UPDATE_CURRENT_MUSIC = "UPDATE_CURRENT_MUSIC";
 
 
-    private int currentMode = 1; //default all loop
+    private int currentMode = 0; //default all loop
     public static final int MODE_ONE_LOOP = 0;
     public static final int MODE_ALL_LOOP = 1;
     public static final int MODE_RANDOM = 2;
@@ -42,7 +44,7 @@ public class MusicService extends Service {
     private int currentPosition = 0;
     private boolean isPlaying = false;
 
-    private ArrayList<File> mMusicFilesList = new ArrayList<File>();
+    private ArrayList<AssetFileDescriptor> mMusicFilesList = new ArrayList<AssetFileDescriptor>();
 
 
     private final IBinder musicBinder = new MusicBinder();
@@ -54,13 +56,13 @@ public class MusicService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case updateProgress:
-                    toUpdateProgress();
+                    //toUpdateProgress();
                     break;
                 case updateDuration:
-                    toUpdateDuration();
+                    //toUpdateDuration();
                     break;
                 case updateCurrentMusic:
-                    toUpdateCurrentMusic();
+                   // toUpdateCurrentMusic();
                     break;
             }
         }
@@ -94,8 +96,16 @@ public class MusicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mMusicFilesList.clear();
-        mMusicFilesList = (ArrayList<File>)intent.getExtras().get("musicFileList");
-        currentIndex = 0;
+        mMusicFilesList = new ArrayList<AssetFileDescriptor>();
+        try{
+            mMusicFilesList.add(getAssets().openFd("back1.mp3"));
+            mMusicFilesList.add(getAssets().openFd("back1.mp3"));
+            Log.e(TAG, "here");
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -155,7 +165,8 @@ public class MusicService extends Service {
         mediaPlayer.reset();
         if ((0 <= currentIndex) && (currentIndex < mMusicFilesList.size())) {
             try {
-                mediaPlayer.setDataSource(mMusicFilesList.get(currentIndex).getAbsolutePath());
+                AssetFileDescriptor fd = mMusicFilesList.get(currentIndex);
+                mediaPlayer.setDataSource(fd.getFileDescriptor(), fd.getStartOffset(), fd.getLength());
                 mediaPlayer.prepareAsync();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -254,7 +265,7 @@ public class MusicService extends Service {
         sendBroadcast(intent);
     }
 
-    class MusicBinder extends Binder {
+    public class MusicBinder extends Binder {
         public MusicService getService() {
             return MusicService.this;
         }
@@ -306,7 +317,6 @@ public class MusicService extends Service {
                 //Log.e(TAG, "changeProgress.");
                 currentPosition = progress * 1000;
                 mediaPlayer.seekTo(currentPosition);
-
             }
         }
     }
