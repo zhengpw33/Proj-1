@@ -1,5 +1,6 @@
 package com.example.vince.proj;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +31,7 @@ import java.io.IOException;
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
     private MusicService.MusicBinder musicBinder;
-
+    private ProgressReceiver progressReceiver;
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
@@ -127,6 +128,7 @@ public class StartActivity extends AppCompatActivity {
         }
 
         //initRoleData();
+        registerLocalReceiver();
         connectToMusicService();
 
     }
@@ -193,5 +195,23 @@ public class StartActivity extends AppCompatActivity {
             unbindService(serviceConnection);
         }
     }
-
+    private void registerLocalReceiver() {
+        progressReceiver = new ProgressReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MusicService.action1);
+        intentFilter.addAction(MusicService.action2);
+        registerReceiver(progressReceiver, intentFilter);
+    }
+    class ProgressReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (MusicService.action1.equals(action)){
+                musicBinder.startPlay(1,0);
+            }
+            else if(MusicService.action2.equals(action)){
+                musicBinder.startPlay(4,0);
+            }
+        }
+    }
 }

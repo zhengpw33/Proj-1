@@ -1,10 +1,14 @@
 package com.example.vince.proj;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Resources;
 import android.media.Image;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -61,9 +65,22 @@ public class Battle extends AppCompatActivity {
     private boolean PREPARE;
     private List<Role> dbrole;
     private int CURRENT;
-    private boolean SIGNAL;
 
-
+    private MusicService.MusicBinder musicBinder;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicBinder = null;
+        }
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            if (musicBinder == null) {
+                musicBinder = (MusicService.MusicBinder) service;
+                //启动音乐
+                musicBinder.startPlay(0,0);
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +118,7 @@ public class Battle extends AppCompatActivity {
         rolesView1.setVisibility(View.VISIBLE);
         rolesView2.setVisibility(View.INVISIBLE);
 
-        SIGNAL = false;
+
         relativeLayout.setVisibility(View.INVISIBLE);
         rolesView1.setVisibility(View.VISIBLE);
 
@@ -156,6 +173,7 @@ public class Battle extends AppCompatActivity {
                 player2_blood_num-=(int)(Math.random()*10);
                 player2_blood.setText(String.valueOf(player2_blood_num));
                 TURN = true;
+                isgameover();
                // listView.smoothScrollToPositionFromTop(0, 0);
             }
             @Override
@@ -171,14 +189,18 @@ public class Battle extends AppCompatActivity {
         action1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //todo 称赞事件
+                Intent intent = new Intent();
+                intent.setAction("action1");
+                sendBroadcast(intent);
                 relativeLayout.setVisibility(View.INVISIBLE);
             }
         });
         action2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                //todo 嘲讽事件
+                Intent intent = new Intent();
+                intent.setAction("action2");
+                sendBroadcast(intent);
                 relativeLayout.setVisibility(View.INVISIBLE);
             }
         });
@@ -241,7 +263,6 @@ public class Battle extends AppCompatActivity {
         }
     }
     void AI_turn(){
-        isgameover();
         if(TURN){
             if(CURRENT<6){
                 CURRENT+=1;
@@ -265,6 +286,7 @@ public class Battle extends AppCompatActivity {
                 isgameover();
             }
         }
+
     }
     void isgameover(){
         if(player1_blood_num<=0) gameover(false);
@@ -282,6 +304,7 @@ public class Battle extends AppCompatActivity {
         });
     }
     void gameover(boolean outcome){
+        TURN = false;
         if(outcome){
             dialog.setMessage("游戏结束，你赢了!!!");
             DONE = true;

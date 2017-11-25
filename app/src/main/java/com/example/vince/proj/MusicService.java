@@ -23,9 +23,9 @@ import java.util.ArrayList;
 public class MusicService extends Service {
     private static final String TAG = MusicService.class.getSimpleName();
 
-    public static final String ACTION_UPDATE_PROGRESS = "UPDATE_PROGRESS";
-    public static final String ACTION_UPDATE_DURATION = "UPDATE_DURATION";
-    public static final String ACTION_UPDATE_CURRENT_MUSIC = "UPDATE_CURRENT_MUSIC";
+    public static final String action1 = "action1";
+    public static final String action2 = "action2";
+    public int lastposition=0;
 
 
     private int currentMode = 0; //default all loop
@@ -51,22 +51,6 @@ public class MusicService extends Service {
 
     public MusicService() {
     }
-
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case updateProgress:
-                    //toUpdateProgress();
-                    break;
-                case updateDuration:
-                    //toUpdateDuration();
-                    break;
-                case updateCurrentMusic:
-                   // toUpdateCurrentMusic();
-                    break;
-            }
-        }
-    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -99,8 +83,10 @@ public class MusicService extends Service {
         mMusicFilesList = new ArrayList<AssetFileDescriptor>();
         try{
             mMusicFilesList.add(getAssets().openFd("back1.mp3"));
-            mMusicFilesList.add(getAssets().openFd("back1.mp3"));
-            Log.e(TAG, "here");
+            mMusicFilesList.add(getAssets().openFd("well_played1.mp3"));
+            mMusicFilesList.add(getAssets().openFd("well_played2.mp3"));
+            mMusicFilesList.add(getAssets().openFd("well_played3.mp3"));
+            mMusicFilesList.add(getAssets().openFd("threaten.mp3"));
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -128,26 +114,16 @@ public class MusicService extends Service {
             public void onPrepared(MediaPlayer mp) {
                 mediaPlayer.seekTo(currentPosition);
                 mediaPlayer.start();
-                handler.sendEmptyMessage(updateDuration);
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 if (isPlaying) {
-                    switch (currentMode) {
-                        case MODE_ONE_LOOP:
-                            mediaPlayer.start();
-                            break;
-                        case MODE_ALL_LOOP:
-                            play((currentIndex + 1) % mMusicFilesList.size(), 0);
-                            break;
-                        case MODE_RANDOM:
-                            play(getRandomPosition(), 0);
-                            break;
-                        default:
-                            break;
-                    }
+                    if(currentIndex!=0)
+                        play(0, lastposition);
+                    else
+                        play(0,0);
                 }
             }
         });
@@ -160,9 +136,14 @@ public class MusicService extends Service {
     }
 
     private void play(int curIndex, int pCurrentPosition){
+        if(curIndex!=0) lastposition = mediaPlayer.getCurrentPosition();
         currentPosition = pCurrentPosition;
-        setCurrentMusic(curIndex);
+
         mediaPlayer.reset();
+        if(curIndex==1){
+            curIndex += (int)(Math.random()*10)%3;
+        }
+        setCurrentMusic(curIndex);
         if ((0 <= currentIndex) && (currentIndex < mMusicFilesList.size())) {
             try {
                 AssetFileDescriptor fd = mMusicFilesList.get(currentIndex);
@@ -171,8 +152,6 @@ public class MusicService extends Service {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            handler.sendEmptyMessage(updateProgress);
             isPlaying = true;
         } else {
             Log.e(TAG, "music index out of bounds.");
@@ -182,7 +161,6 @@ public class MusicService extends Service {
 
     private void setCurrentMusic(int pCurrentMusicIndex) {
         currentIndex = pCurrentMusicIndex;
-        handler.sendEmptyMessage(updateCurrentMusic);
     }
 
     private void stop() {
@@ -235,35 +213,6 @@ public class MusicService extends Service {
         return random;
     }
 
-    private void toUpdateProgress(){
-        if (mediaPlayer != null && isPlaying) {
-            int progress = mediaPlayer.getCurrentPosition();
-            //Log.e(TAG,"current: " + progress);
-            Intent intent = new Intent();
-            intent.setAction(ACTION_UPDATE_PROGRESS);
-            intent.putExtra(ACTION_UPDATE_PROGRESS, progress);
-            sendBroadcast(intent);
-            handler.sendEmptyMessageDelayed(updateProgress, 40);
-        }
-    }
-
-    private void toUpdateDuration() {
-        if (mediaPlayer != null) {
-            int duration = mediaPlayer.getDuration();
-            //Log.e(TAG,"duration=" + duration);
-            Intent intent = new Intent();
-            intent.setAction(ACTION_UPDATE_DURATION);
-            intent.putExtra(ACTION_UPDATE_DURATION, duration);
-            sendBroadcast(intent);
-        }
-    }
-
-    private void toUpdateCurrentMusic() {
-        Intent intent = new Intent();
-        intent.setAction(ACTION_UPDATE_CURRENT_MUSIC);
-        intent.putExtra(ACTION_UPDATE_CURRENT_MUSIC, currentIndex);
-        sendBroadcast(intent);
-    }
 
     public class MusicBinder extends Binder {
         public MusicService getService() {
