@@ -66,21 +66,7 @@ public class Battle extends AppCompatActivity {
     private List<Role> dbrole;
     private int CURRENT;
 
-    private MusicService.MusicBinder musicBinder;
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            musicBinder = null;
-        }
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            if (musicBinder == null) {
-                musicBinder = (MusicService.MusicBinder) service;
-                //启动音乐
-                musicBinder.startPlay(0,0);
-            }
-        }
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
